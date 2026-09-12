@@ -6,12 +6,19 @@ kernel_main:
 
         call clear
         
-        mov [edi], 'H'
-        mov [edi + 1], 0x0F
-        mov [edi + 2], 'i'
-        mov [edi + 3], 0x0F
+        mov al, 'H'
+        call print
 
+        mov al, 'i'
+        call print
+        
         hlt
+
+print:
+        mov [edi], al
+        mov [edi + 1], 0x0F
+        add edi, 2
+        ret
 
 clear:
         xor edx, edx
