@@ -1,3 +1,5 @@
+%define VGA_BUFFER 0xb8000
+
 section .data
         row dd 0
         column dd 0
@@ -12,8 +14,8 @@ clear:
         cmp edx, 2000
         je .done
 
-        mov [edi + edx * 2], ' '
-        mov [edi + edx * 2 + 1], 0x0F
+        mov [VGA_BUFFER + edx * 2], ' '
+        mov [VGA_BUFFER + edx * 2 + 1], 0x0F
 
         inc edx
         jmp .loop
@@ -33,8 +35,8 @@ print_byte:
         imul eax, 80
         add eax, [column]
 
-        mov [edi + eax * 2], dl
-        mov [edi + eax * 2 + 1], 0x0F
+        mov [VGA_BUFFER + eax * 2], dl
+        mov [VGA_BUFFER + eax * 2 + 1], 0x0F
 
         inc dword [column]
         ret

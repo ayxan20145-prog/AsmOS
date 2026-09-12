@@ -9,7 +9,6 @@ section .text
         extern print_string
 
 kernel_main:
-        mov edi, 0xb8000
         call clear
         
         mov ebx, msg
