@@ -1,3 +1,7 @@
+section .data
+        row dd 0
+        column dd 0
+
 section .text
         global clear
         global print_byte
@@ -14,12 +18,29 @@ clear:
         inc edx
         jmp .loop
 .done:
+        mov dword [row], 0
+        mov dword [column], 0
         ret
 
 print_byte:
-        mov [edi], al
-        mov [edi + 1], 0x0F
-        add edi, 2
+
+        cmp dword [column], 80
+        je .next_row
+
+        mov edx, eax
+
+        mov eax, [row]
+        imul eax, 80
+        add eax, [column]
+
+        mov [edi + eax * 2], dl
+        mov [edi + eax * 2 + 1], 0x0F
+
+        inc dword [column]
+        ret
+.next_row:
+        mov dword [column], 0
+        inc dword [row]
         ret
 
 print_string:
