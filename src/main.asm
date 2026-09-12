@@ -1,3 +1,5 @@
+section .data
+        msg db "hello world", 0
 section .text
         global kernel_main
 
@@ -6,18 +8,28 @@ kernel_main:
 
         call clear
         
-        mov al, 'H'
-        call print
-
-        mov al, 'i'
-        call print
+        mov ebx, msg
+        call print_string
         
         hlt
 
-print:
+print_byte:
         mov [edi], al
         mov [edi + 1], 0x0F
         add edi, 2
+        ret
+
+print_string:
+.loop:
+        mov al, [ebx]
+        cmp al, 0
+        je .done
+
+        call print_byte
+
+        inc ebx
+        jmp .loop
+.done:
         ret
 
 clear:
