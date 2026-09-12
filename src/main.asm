@@ -1,5 +1,6 @@
 section .data
         msg db "hello world", 0
+
 section .text
         global kernel_main
 

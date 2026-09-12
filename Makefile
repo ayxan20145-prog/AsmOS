@@ -4,7 +4,7 @@ LD = ld
 ASMFLAGS = -f elf32
 LDFLAGS = -m elf_i386 -T linker.ld
 
-OBJS = boot.o main.o vga.o
+OBJS = boot.o main.o vga.o io.o
 
 ISO_DIR = iso
 BOOT_DIR = $(ISO_DIR)/boot
@@ -32,6 +32,9 @@ main.o: src/main.asm
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
 vga.o: src/vga.asm
+	$(ASM) $(ASMFLAGS) -o $@ $<
+
+io.o: src/io.asm
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
 iso: all
