@@ -1,10 +1,20 @@
+%include "vga.inc"
+
+section .bss
+        writer: resb Writer_size
+
 section .text
         global kernel_main
 
 kernel_main:
-        mov edi, 0xb8000
-        mov byte [edi], 'h'
-        mov byte [edi + 1], 0x0F
-        mov byte [edi + 2], 'i'
-        mov byte [edi + 3], 0x0F
+        lea edi, [writer]
+        call writer_init
+        
+        lea edi, [writer]
+        mov esi, 'h'
+        call writer_write_byte
+        lea edi, [writer]
+        mov esi, 'i'
+        call writer_write_byte
+
         hlt

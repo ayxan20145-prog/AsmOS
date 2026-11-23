@@ -1,11 +1,11 @@
 ASM = nasm
 LD = ld
 
-ASMFLAGS = -f elf32
+ASMFLAGS = -f elf32 -I include/
 LDFLAGS = -m elf_i386 -T linker.ld
 
 BUILD_DIR = build
-OBJS = $(BUILD_DIR)/boot.o $(BUILD_DIR)/main.o
+OBJS = $(BUILD_DIR)/boot.o $(BUILD_DIR)/main.o $(BUILD_DIR)/vga.o
 
 ISO_DIR = iso
 BOOT_DIR = $(ISO_DIR)/boot
@@ -36,6 +36,9 @@ $(BUILD_DIR)/boot.o: src/boot.asm | $(BUILD_DIR)
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
 $(BUILD_DIR)/main.o: src/main.asm | $(BUILD_DIR)
+	$(ASM) $(ASMFLAGS) -o $@ $<
+	
+$(BUILD_DIR)/vga.o: src/vga.asm | $(BUILD_DIR)
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
 iso: all
