@@ -11,6 +11,9 @@ kernel_main:
         call writer_init
         
         lea edi, [writer]
+        call writer_clear
+        
+        lea edi, [writer]
         mov esi, 'h'
         call writer_write_byte
         lea edi, [writer]

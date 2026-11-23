@@ -30,3 +30,23 @@ writer_write_byte:
         
         pop ebx
         ret
+
+; void writer_clear(Writer *writer)
+; rdi is writer
+writer_clear:
+        push ebx ; i
+        xor ebx, ebx
+.loop:
+        cmp ebx, 2000
+        jnb .done
+
+        mov byte [VGA_BUFFER + ebx * 2], ' '
+        mov byte [VGA_BUFFER + ebx * 2 + 1], 0x0F
+
+        inc ebx
+        jmp .loop
+.done:
+        mov dword [edi + Writer.column], 0
+        mov dword [edi + Writer.row], 0
+        pop ebx
+        ret

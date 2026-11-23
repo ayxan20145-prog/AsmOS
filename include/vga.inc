@@ -10,5 +10,6 @@ endstruc
 
 extern writer_init
 extern writer_write_byte
+extern writer_clear
 
 %endif
