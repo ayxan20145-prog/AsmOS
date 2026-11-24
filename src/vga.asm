@@ -17,6 +17,13 @@ writer_init:
 ; edi is writer
 ; esi is c
 writer_write_byte:
+        mov eax, esi
+        cmp al, 10
+        je .new_line
+
+        cmp dword [edi + Writer.column], 80
+        jae .next_row
+
         push ebx ; position
 
         ; position = row * 80 + column
@@ -32,6 +39,14 @@ writer_write_byte:
         
         pop ebx
         ret
+.new_line:
+        mov dword [edi + Writer.column], 0
+        inc dword [edi + Writer.row]
+        ret
+.next_row:
+        mov dword [edi + Writer.column], 0
+        inc dword [edi + Writer.row]
+        jmp writer_write_byte
 
 ; void writer_write_str(Writer *writer, char *s)
 ; edi is writer

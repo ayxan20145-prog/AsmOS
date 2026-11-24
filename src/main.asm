@@ -4,7 +4,7 @@ section .bss
         writer: resb Writer_size
 
 section .data
-        msg db "Hello world", 0
+        msg db "Hello world", 10, "hi", 0
 
 section .text
         global kernel_main
