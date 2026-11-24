@@ -1,4 +1,5 @@
 %include "vga.inc"
+%include "keyboard.inc"
 
 section .bss
         writer: resb Writer_size
@@ -20,4 +21,12 @@ kernel_main:
         mov esi, msg
         call writer_write_str
 
-        hlt
+.loop:
+        call read_key
+        cmp al, 0
+        je .loop
+        
+        lea edi, [writer]
+        movzx esi, al
+        call writer_write_byte
+        jmp .loop
