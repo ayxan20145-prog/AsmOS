@@ -49,6 +49,11 @@ writer_write_byte:
 .new_line:
         mov dword [edi + Writer.column], 0
         inc dword [edi + Writer.row]
+        push edi ; save writer
+        mov esi, dword [edi + Writer.column]
+        mov edx, dword [edi + Writer.row]
+        call writer_update_cursor
+        pop edi
         ret
 .next_row:
         mov dword [edi + Writer.column], 0
