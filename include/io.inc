@@ -2,5 +2,6 @@
 %define IO_INC
 
 extern outb
+extern inb
 
 %endif
