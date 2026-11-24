@@ -22,6 +22,9 @@ writer_write_byte:
         cmp al, 10
         je .new_line
 
+        cmp al, 8
+        je .backspace
+
         cmp dword [edi + Writer.column], 80
         jae .next_row
 
@@ -59,7 +62,21 @@ writer_write_byte:
         mov dword [edi + Writer.column], 0
         inc dword [edi + Writer.row]
         jmp writer_write_byte
-
+.backspace:
+        cmp dword [edi + Writer.column], 0
+        ja .backspace2
+        ret
+.backspace2:
+        dec dword [edi + Writer.column]
+        mov esi, ' '
+        call writer_write_byte
+        dec dword [edi + Writer.column]
+        push edi ; save writer
+        mov esi, dword [edi + Writer.column]
+        mov edx, dword [edi + Writer.row]
+        call writer_update_cursor
+        pop edi
+        ret
 ; void writer_write_str(Writer *writer, char *s)
 ; edi is writer
 ; esi is s
