@@ -1,12 +1,36 @@
 %include "keyboard.inc"
 
 section .data
-        keymap:
-                db 0
-                db 0
-                db '1'
-                db '2'
-                times 124 db 0
+keymap:
+        ; 0x00 - 0x0F
+        db 0, 27, '1', '2', '3', '4', '5', '6'
+        db '7', '8', '9', '0', '-', '=', 8, 9
+
+        ; 0x10 - 0x1F
+        db 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i'
+        db 'o', 'p', '[', ']', 10, 0, 'a', 's'
+
+        ; 0x20 - 0x2F
+        db 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'
+        db "'", '`', 0, 0x5C, 'z', 'x', 'c', 'v'
+
+        ; 0x30 - 0x3F
+        db 'b', 'n', 'm', ',', '.', '/', 0, '*'
+        db 0, ' ', 0, 0, 0, 0, 0, 0
+
+        ; 0x40 - 0x4F
+        db 0, 0, 0, 0, 0, 0, 0, '7'
+        db '8', '9', '-', '4', '5', '6', '+', '1'
+
+        ; 0x50 - 0x5F
+        db '2', '3', '0', '.', 0, 0, 0, 0
+        times 8 db 0
+
+        ; 0x60 - 0x6F
+        times 16 db 0
+
+        ; 0x70 - 0x7F
+        times 16 db 0
 
 section .text
         global read_scancode
@@ -18,10 +42,9 @@ read_scancode:
         mov edi, 0x64
         call inb
         and al, 1
-
         cmp al, 0
         je .loop
-.done:
+
         mov edi, 0x60
         call inb
         ret
@@ -35,8 +58,9 @@ read_key:
 
         movzx edx, al
         lea ecx, [keymap]
-        mov al, [ecx + edx] ; al = keymap[edx]
+        mov al, [ecx + edx]
         ret
+
 .label:
-        mov al, 0
+        xor al, al
         ret
