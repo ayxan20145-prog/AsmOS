@@ -3,6 +3,8 @@
 section .text
         global writer_init
         global writer_write_byte
+        global writer_write_str
+        global writer_clear
 
 ; void writer_init(Writer *writer)
 ; edi is writer
@@ -28,6 +30,23 @@ writer_write_byte:
 
         inc dword [edi + Writer.column]
         
+        pop ebx
+        ret
+
+; void writer_write_str(Writer *writer, char *s)
+; edi is writer
+; esi is s
+writer_write_str:
+        push ebx
+        mov ebx, esi ; ebx = pointer
+.loop:
+        movzx esi, byte [ebx] ; esi = char
+        cmp esi, 0
+        je .done
+        call writer_write_byte
+        inc ebx
+        jmp .loop
+.done:
         pop ebx
         ret
 

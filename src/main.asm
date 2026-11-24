@@ -3,6 +3,9 @@
 section .bss
         writer: resb Writer_size
 
+section .data
+        msg db "Hello world", 0
+
 section .text
         global kernel_main
 
@@ -12,12 +15,9 @@ kernel_main:
         
         lea edi, [writer]
         call writer_clear
-        
+
         lea edi, [writer]
-        mov esi, 'h'
-        call writer_write_byte
-        lea edi, [writer]
-        mov esi, 'i'
-        call writer_write_byte
+        mov esi, msg
+        call writer_write_str
 
         hlt
